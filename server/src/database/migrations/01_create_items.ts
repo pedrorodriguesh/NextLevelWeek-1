@@ -1,20 +1,13 @@
 import { Knex } from 'knex'
 
 export async function up(knex: Knex): Promise<any> { // ### Criar a tabela.
-   return knex.schema.createTable('points', table => {
-        table.increments('id').primary();
+   return knex.schema.createTable('items', table => {
+        table.increments('id').primary()
         table.string('image').notNullable()
-        table.string('name').notNullable()
-        table.string('email').notNullable()
-        table.string('whatsapp').notNullable()
-        table.decimal('latitute').notNullable()
-        table.decimal('longitude').notNullable()
-        table.string('city').notNullable()
-        table.string('uf', 2).notNullable()
+        table.string('title').notNullable()
     })
-    
 } 
 
 export async function down(knex: Knex) { // ### Rollback.
-    return knex.schema.dropTable('points')
+    return knex.schema.dropTable('items')
 } 

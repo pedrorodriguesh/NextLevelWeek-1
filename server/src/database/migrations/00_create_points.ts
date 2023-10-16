@@ -12,7 +12,6 @@ export async function up(knex: Knex): Promise<any> { // ### Criar a tabela.
         table.string('city').notNullable()
         table.string('uf', 2).notNullable()
     })
-    
 } 
 
 export async function down(knex: Knex) { // ### Rollback.
