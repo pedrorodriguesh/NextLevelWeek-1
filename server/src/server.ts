@@ -1,3 +1,4 @@
+// start do servidor.
 import express from "express";
 import routes from './routes'
 
