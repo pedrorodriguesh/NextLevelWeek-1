@@ -9,6 +9,7 @@ const AppRoutes = () => {
     <BrowserRouter>
       <Routes>
         <Route Component={Home} path="/" />
+        <Route Component={CreatePoint} path="/create-point" />
       </Routes>
     </BrowserRouter>
   );
