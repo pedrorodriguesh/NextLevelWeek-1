@@ -20,10 +20,15 @@ interface Uf {
   sigla: string
 }
 
+interface Cities {
+  id: number
+  nome: string
+}
+
 const CreatePoint = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [uf, setUf] = useState<Uf[]>([])
-  const [city, setCities] = useState([])
+  const [city, setCities] = useState<Cities[]>([])
   const [selectedUf, setSelectedUf] = useState('')
 
   useEffect(() => {
@@ -40,7 +45,7 @@ const CreatePoint = () => {
 
   useEffect(() => {
     axios.get(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${selectedUf}/municipios`).then((response) => {
-      console.log(response)
+      setCities(response.data)
     })
   }, [selectedUf])
 
@@ -118,6 +123,9 @@ const CreatePoint = () => {
               <label htmlFor="city">Cidade</label>
               <select name="city" id="city">
                 <option value="0">Selecione uma cidade</option>
+                {city.map((city) => (
+                  <option key={city.id} value={city.id}>{city.nome}</option>
+                ))}
               </select>
             </div>
           </div>
