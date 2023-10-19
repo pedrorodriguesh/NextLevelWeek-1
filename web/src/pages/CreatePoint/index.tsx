@@ -1,12 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
 import { MapContainer, TileLayer, useMap, Marker, Popup } from "react-leaflet";
+import api from "../../services/api";
+import axios from 'axios'
 
 import "./styles.css";
 import logo from "../../assets/logo.svg";
 
+interface Item {
+  id: number,
+  title: string,
+  image_url: string
+}
+
+interface Uf {
+  id: number,
+  nome: string
+  sigla: string
+}
+
 const CreatePoint = () => {
+  const [items, setItems] = useState<Item[]>([]);
+  const [uf, setUf] = useState<Uf[]>([])
+  const [city, setCities] = useState([])
+  const [selectedUf, setSelectedUf] = useState('')
+
+  useEffect(() => {
+    api.get("items").then((response) => {
+      setItems(response.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    axios.get('https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome').then((response) => {
+      setUf(response.data)
+    })
+  }, [])
+
+  useEffect(() => {
+    axios.get(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${selectedUf}/municipios`).then((response) => {
+      console.log(response)
+    })
+  }, [selectedUf])
+
   return (
     <div id="page-create-point">
       <header>
@@ -62,17 +99,18 @@ const CreatePoint = () => {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
             <Marker position={[-22.226, -49.92]}>
-              <Popup>
-                Você está aqui!
-              </Popup>
+              <Popup>Você está aqui!</Popup>
             </Marker>
           </MapContainer>
 
           <div className="field-group">
             <div className="field">
-              <label htmlFor="uf">Estado (UF)</label>
-              <select name="uf" id="uf">
-                <option value="0">Selecione uma UF</option>
+              <label htmlFor="uf">Estado</label>
+              <select name="uf" id="uf" onChange={e => setSelectedUf(e.target.value)}>
+                <option value="0">Selecione um estado</option>
+                {uf.map((state) => (
+                  <option value={state.sigla} key={state.id}>{state.sigla}</option>
+                ))}
               </select>
             </div>
 
@@ -92,33 +130,12 @@ const CreatePoint = () => {
           </legend>
 
           <ul className="items-grid">
-            <li>
-              <img src="http://localhost:3333/uploads/oleo.svg" alt="teste" />
-              <span>Óleo de Cozinha</span>
-            </li>
-            <li>
-              <img src="http://localhost:3333/uploads/oleo.svg" alt="teste" />
-              <span>Óleo de Cozinha</span>
-            </li>
-            <li>
-              <img src="http://localhost:3333/uploads/oleo.svg" alt="teste" />
-              <span>Óleo de Cozinha</span>
-            </li>
-            <li>
-              <img src="http://localhost:3333/uploads/oleo.svg" alt="teste" />
-              <span>Óleo de Cozinha</span>
-            </li>
-            <li>
-              <img src="http://localhost:3333/uploads/oleo.svg" alt="teste" />
-              <span>Óleo de Cozinha</span>
-            </li>
-            <li>
-              <img
-                src="http://localhost:3333/uploads/lampadas.svg"
-                alt="teste"
-              />
-              <span>Óleo de Cozinha</span>
-            </li>
+            {items.map((item) => (
+              <li key={item.id}>
+                <img src={item.image_url} alt={item.title} />
+                <span>{item.title}</span>
+              </li>
+            ))}
           </ul>
         </fieldset>
 
