@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
-import { MapContainer, TileLayer, useMap, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, useMapEvents, Marker, Popup } from "react-leaflet";
 import api from "../../services/api";
 import axios from 'axios'
+import { LatLng, LatLngExpression } from "leaflet";
 
 import "./styles.css";
 import logo from "../../assets/logo.svg";
@@ -29,6 +30,7 @@ const CreatePoint = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [uf, setUf] = useState<Uf[]>([])
   const [city, setCities] = useState<Cities[]>([])
+
   const [selectedUf, setSelectedUf] = useState('')
 
   useEffect(() => {
@@ -48,6 +50,26 @@ const CreatePoint = () => {
       setCities(response.data)
     })
   }, [selectedUf])
+
+  function LocationMarker() {
+    const [position, setPosition] = useState({} as LatLngExpression)
+
+    const map = useMapEvents({
+      click(){
+        map.locate()
+      },
+      locationfound(e){
+        setPosition(e.latlng)
+        map.flyTo(e.latlng)
+      }
+    })
+
+    return position === null ? null : (
+      <Marker position={position}>
+        <Popup>Você está aqui!</Popup>
+      </Marker>
+    )
+  }
 
   return (
     <div id="page-create-point">
@@ -103,9 +125,7 @@ const CreatePoint = () => {
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <Marker position={[-22.226, -49.92]}>
-              <Popup>Você está aqui!</Popup>
-            </Marker>
+            <LocationMarker />
           </MapContainer>
 
           <div className="field-group">
