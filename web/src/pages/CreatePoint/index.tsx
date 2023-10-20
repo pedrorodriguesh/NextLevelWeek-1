@@ -1,37 +1,44 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
-import { MapContainer, TileLayer, useMapEvents, Marker, Popup } from "react-leaflet";
+import {
+  useMap,
+  MapContainer,
+  TileLayer,
+  useMapEvents,
+  Marker,
+  Popup,
+} from "react-leaflet";
 import api from "../../services/api";
-import axios from 'axios'
-import { LatLng, LatLngExpression } from "leaflet";
+import axios from "axios";
+import { LatLngExpression, LeafletMouseEvent, latLng } from "leaflet";
 
 import "./styles.css";
 import logo from "../../assets/logo.svg";
 
 interface Item {
-  id: number,
-  title: string,
-  image_url: string
+  id: number;
+  title: string;
+  image_url: string;
 }
 
 interface Uf {
-  id: number,
-  nome: string
-  sigla: string
+  id: number;
+  nome: string;
+  sigla: string;
 }
 
 interface Cities {
-  id: number
-  nome: string
+  id: number;
+  nome: string;
 }
 
 const CreatePoint = () => {
   const [items, setItems] = useState<Item[]>([]);
-  const [uf, setUf] = useState<Uf[]>([])
-  const [city, setCities] = useState<Cities[]>([])
+  const [uf, setUf] = useState<Uf[]>([]);
+  const [city, setCities] = useState<Cities[]>([]);
 
-  const [selectedUf, setSelectedUf] = useState('')
+  const [selectedUf, setSelectedUf] = useState("");
 
   useEffect(() => {
     api.get("items").then((response) => {
@@ -40,38 +47,47 @@ const CreatePoint = () => {
   }, []);
 
   useEffect(() => {
-    axios.get('https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome').then((response) => {
-      setUf(response.data)
-    })
-  }, [])
+    axios
+      .get(
+        "https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome"
+      )
+      .then((response) => {
+        setUf(response.data);
+      });
+  }, []);
 
   useEffect(() => {
-    axios.get(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${selectedUf}/municipios`).then((response) => {
-      setCities(response.data)
-    })
-  }, [selectedUf])
+    axios
+      .get(
+        `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${selectedUf}/municipios`
+      )
+      .then((response) => {
+        setCities(response.data);
+      });
+  }, [selectedUf]);
 
   function LocationMarker() {
-    const [position, setPosition] = useState({} as LatLngExpression)
+    const [position, setPosition] = useState({} as LatLngExpression);
 
     const map = useMapEvents({
-      click(){
-        map.locate()
+      click() {
+        map.locate();
       },
-      locationfound(e){
-        setPosition(e.latlng)
-        map.flyTo(e.latlng)
-      }
-    })
+      locationfound(e) {
+        setPosition(e.latlng);
+        map.flyTo(e.latlng, map.getZoom());
+      },
+    });
 
-    // check for error
-    return position === null ? null : (
-      <Marker position={position}>
+    console.log(position)
+
+    return (
+      <Marker position={[51.505, -0.09]}>
         <Popup>Você está aqui!</Popup>
       </Marker>
-    )
+    );
   }
-
+  
   return (
     <div id="page-create-point">
       <header>
@@ -118,7 +134,7 @@ const CreatePoint = () => {
           </legend>
 
           <MapContainer
-            center={[-22.226, -49.92]}
+            center={[51.505, -0.09]}
             zoom={15}
             scrollWheelZoom={true}
           >
@@ -132,10 +148,16 @@ const CreatePoint = () => {
           <div className="field-group">
             <div className="field">
               <label htmlFor="uf">Estado</label>
-              <select name="uf" id="uf" onChange={e => setSelectedUf(e.target.value)}>
+              <select
+                name="uf"
+                id="uf"
+                onChange={(e) => setSelectedUf(e.target.value)}
+              >
                 <option value="0">Selecione um estado</option>
                 {uf.map((state) => (
-                  <option value={state.sigla} key={state.id}>{state.sigla}</option>
+                  <option value={state.sigla} key={state.id}>
+                    {state.sigla}
+                  </option>
                 ))}
               </select>
             </div>
@@ -145,7 +167,9 @@ const CreatePoint = () => {
               <select name="city" id="city">
                 <option value="0">Selecione uma cidade</option>
                 {city.map((city) => (
-                  <option key={city.id} value={city.id}>{city.nome}</option>
+                  <option key={city.id} value={city.id}>
+                    {city.nome}
+                  </option>
                 ))}
               </select>
             </div>
