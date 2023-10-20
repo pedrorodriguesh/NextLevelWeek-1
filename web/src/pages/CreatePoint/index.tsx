@@ -64,6 +64,7 @@ const CreatePoint = () => {
       }
     })
 
+    // check for error
     return position === null ? null : (
       <Marker position={position}>
         <Popup>Você está aqui!</Popup>
