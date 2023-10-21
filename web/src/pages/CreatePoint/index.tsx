@@ -139,7 +139,7 @@ const CreatePoint = () => {
       items
     }
 
-    await api.post('points', data)
+    api.post('points', data)
 
     alert('Ponto criado com sucesso!')
   }
