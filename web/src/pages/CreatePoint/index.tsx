@@ -42,12 +42,14 @@ const CreatePoint = () => {
     0, 0,
   ]);
 
+  // pegando os items da api
   useEffect(() => {
     api.get("items").then((response) => {
       setItems(response.data);
     });
   }, []);
 
+  // pegando os estados pela api do ibge
   useEffect(() => {
     axios
       .get(
@@ -58,6 +60,7 @@ const CreatePoint = () => {
       });
   }, []);
 
+  // pegando as cidades de acordo com o estado selecionado, roda dnv toda vez que troca o estado.
   useEffect(() => {
     axios
       .get(
@@ -68,6 +71,7 @@ const CreatePoint = () => {
       });
   }, [selectedUf]);
 
+  // localização inicial do mapa no local do usuário.
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
       setInitialPosition([Number(position.coords.latitude.toFixed(2)), Number(position.coords.longitude.toFixed(2))]);
