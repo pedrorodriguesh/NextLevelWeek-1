@@ -37,6 +37,7 @@ const CreatePoint = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [uf, setUf] = useState<Uf[]>([]);
   const [city, setCities] = useState<Cities[]>([]);
+  const [userPosition, setUserPosition] = useState<[number, number]>([0,0])
 
   const [selectedUf, setSelectedUf] = useState("");
 
@@ -67,22 +68,22 @@ const CreatePoint = () => {
   }, [selectedUf]);
 
   function LocationMarker() {
-    const [position, setPosition] = useState({} as LatLngExpression);
-
     const map = useMapEvents({
       click(e) {
-        let teste = e.latlng
-        setPosition(teste)
+        setUserPosition([
+          e.latlng.lat,
+          e.latlng.lng
+        ])
       },
     });
 
-    console.log(position)
+    console.log(userPosition)
 
     return (
-      <Marker position={[51.505, -0.09]}>
+      <Marker position={userPosition}>
         <Popup>Você está aqui!</Popup>
       </Marker>
-      
+
     );
   }
   
