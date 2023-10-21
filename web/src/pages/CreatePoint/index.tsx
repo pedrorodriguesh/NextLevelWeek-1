@@ -11,7 +11,7 @@ import {
 } from "react-leaflet";
 import api from "../../services/api";
 import axios from "axios";
-import { LatLngExpression, LeafletMouseEvent, latLng } from "leaflet";
+import { LatLngExpression, LeafletMouseEvent } from "leaflet";
 
 import "./styles.css";
 import logo from "../../assets/logo.svg";
@@ -70,12 +70,9 @@ const CreatePoint = () => {
     const [position, setPosition] = useState({} as LatLngExpression);
 
     const map = useMapEvents({
-      click() {
-        map.locate();
-      },
-      locationfound(e) {
-        setPosition(e.latlng);
-        map.flyTo(e.latlng, map.getZoom());
+      click(e) {
+        let teste = e.latlng
+        setPosition(teste)
       },
     });
 
