@@ -35,9 +35,12 @@ const CreatePoint = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [uf, setUf] = useState<Uf[]>([]);
   const [city, setCities] = useState<Cities[]>([]);
-  const [userPosition, setUserPosition] = useState<[number, number]>([0,0])
-
   const [selectedUf, setSelectedUf] = useState("");
+
+  const [userPosition, setUserPosition] = useState<[number, number]>([0, 0]);
+  const [initialPosition, setInitialPosition] = useState<[number, number]>([
+    0, 0,
+  ]);
 
   useEffect(() => {
     api.get("items").then((response) => {
@@ -65,13 +68,17 @@ const CreatePoint = () => {
       });
   }, [selectedUf]);
 
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      setInitialPosition([Number(position.coords.latitude.toFixed(2)), Number(position.coords.longitude.toFixed(2))]);
+    });
+  }, []);
+  
+  console.log(initialPosition)
   function LocationMarker() {
     const map = useMapEvents({
       click(e) {
-        setUserPosition([
-          e.latlng.lat,
-          e.latlng.lng
-        ])
+        setUserPosition([e.latlng.lat, e.latlng.lng]);
       },
     });
 
@@ -79,10 +86,9 @@ const CreatePoint = () => {
       <Marker position={userPosition}>
         <Popup>Você está aqui!</Popup>
       </Marker>
-
     );
   }
-  
+
   return (
     <div id="page-create-point">
       <header>
@@ -129,7 +135,7 @@ const CreatePoint = () => {
           </legend>
 
           <MapContainer
-            center={[51.505, -0.09]}
+            center={initialPosition}
             zoom={15}
             scrollWheelZoom={true}
           >
