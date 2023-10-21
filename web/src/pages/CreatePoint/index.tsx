@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
 import {
-  useMap,
   MapContainer,
   TileLayer,
   useMapEvents,
@@ -11,7 +10,6 @@ import {
 } from "react-leaflet";
 import api from "../../services/api";
 import axios from "axios";
-import { LatLngExpression, LeafletMouseEvent } from "leaflet";
 
 import "./styles.css";
 import logo from "../../assets/logo.svg";
@@ -76,8 +74,6 @@ const CreatePoint = () => {
         ])
       },
     });
-
-    console.log(userPosition)
 
     return (
       <Marker position={userPosition}>
