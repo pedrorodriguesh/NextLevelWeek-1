@@ -35,7 +35,13 @@ const CreatePoint = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [uf, setUf] = useState<Uf[]>([]);
   const [city, setCities] = useState<Cities[]>([]);
+
+  // Estados para cadastro na API =>
   const [selectedUf, setSelectedUf] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
+  const [entityName, setEntityName] = useState("")
+  const [entityEmail, setEntityEmail] = useState("")
+  const [entityWpp, setEntityWpp] = useState("")
 
   const [userPosition, setUserPosition] = useState<[number, number]>([0, 0]);
   const [initialPosition, setInitialPosition] = useState<[number, number]>([
@@ -74,11 +80,14 @@ const CreatePoint = () => {
   // localização inicial do mapa no local do usuário.
   useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
-      setInitialPosition([Number(position.coords.latitude.toFixed(2)), Number(position.coords.longitude.toFixed(2))]);
+      setInitialPosition([
+        Number(position.coords.latitude.toFixed(2)),
+        Number(position.coords.longitude.toFixed(2)),
+      ]);
     });
   }, []);
-  
-  console.log(initialPosition)
+
+  // componente que pega a localização que o usuário clica.
   function LocationMarker() {
     const map = useMapEvents({
       click(e) {
@@ -92,6 +101,7 @@ const CreatePoint = () => {
       </Marker>
     );
   }
+
 
   return (
     <div id="page-create-point">
@@ -116,18 +126,18 @@ const CreatePoint = () => {
 
           <div className="field">
             <label htmlFor="name">Nome da entidade</label>
-            <input type="text" name="name" id="name" />
+            <input type="text" name="name" id="name" onChange={(e) => setEntityName(e.target.value)} />
           </div>
 
           <div className="field-group">
             <div className="field">
               <label htmlFor="email">E-mail</label>
-              <input type="email" name="email" id="email" />
+              <input type="email" name="email" id="email" onChange={(e) => setEntityEmail(e.target.value)} />
             </div>
 
             <div className="field">
               <label htmlFor="whataspp">Whatsapp</label>
-              <input type="text" name="whatsapp" id="whatsapp" />
+              <input type="text" name="whatsapp" id="whatsapp" onChange={(e) => setEntityWpp(e.target.value)}/>
             </div>
           </div>
         </fieldset>
@@ -169,10 +179,14 @@ const CreatePoint = () => {
 
             <div className="field">
               <label htmlFor="city">Cidade</label>
-              <select name="city" id="city">
+              <select
+                name="city"
+                id="city"
+                onChange={(e) => setSelectedCity(e.target.value)}
+              >
                 <option value="0">Selecione uma cidade</option>
                 {city.map((city) => (
-                  <option key={city.id} value={city.id}>
+                  <option key={city.nome} value={city.nome}>
                     {city.nome}
                   </option>
                 ))}
