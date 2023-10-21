@@ -42,6 +42,7 @@ const CreatePoint = () => {
   const [entityName, setEntityName] = useState("")
   const [entityEmail, setEntityEmail] = useState("")
   const [entityWpp, setEntityWpp] = useState("")
+  const [selectedItems, setSelectedItems] = useState<number[]>([])
 
   const [userPosition, setUserPosition] = useState<[number, number]>([0, 0]);
   const [initialPosition, setInitialPosition] = useState<[number, number]>([
@@ -100,6 +101,10 @@ const CreatePoint = () => {
         <Popup>Você está aqui!</Popup>
       </Marker>
     );
+  }
+
+  function handleSelectItem(id: number) {
+    setSelectedItems([id])
   }
 
 
@@ -203,7 +208,12 @@ const CreatePoint = () => {
 
           <ul className="items-grid">
             {items.map((item) => (
-              <li key={item.id}>
+              <li 
+              key={item.id} 
+              onClick={() => handleSelectItem(item.id)} 
+              className={selectedItems.includes(item.id) ? "selected" : ""}
+              
+              >
                 <img src={item.image_url} alt={item.title} />
                 <span>{item.title}</span>
               </li>
