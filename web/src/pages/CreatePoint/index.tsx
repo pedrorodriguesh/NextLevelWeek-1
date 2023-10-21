@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
 import {
@@ -103,8 +103,45 @@ const CreatePoint = () => {
     );
   }
 
-  function handleSelectItem(id: number) {
-    setSelectedItems([id])
+ function handleSelectItem(id: number) {
+    const alreadySelected = selectedItems.findIndex(item => item === id)
+
+    if(alreadySelected >= 0){
+      const filteredItems = selectedItems.filter(item => item !== id)
+
+      setSelectedItems(filteredItems)
+    } else {
+      setSelectedItems([ ...selectedItems, id ])
+    }
+
+  }
+
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault()
+
+    const name = entityName
+    const email = entityEmail
+    const whatsapp = entityWpp
+    const uf = selectedUf
+    const city = selectedCity
+    const latitude = -22.222541067339215
+    const longitude = -49.940111339092255
+    const items = selectedItems
+
+    const data = {
+      name,
+      email,
+      whatsapp,
+      latitude,
+      longitude,
+      city,
+      uf,
+      items
+    }
+
+    await api.post('points', data)
+
+    alert('Ponto criado com sucesso!')
   }
 
 
@@ -119,7 +156,7 @@ const CreatePoint = () => {
         </Link>
       </header>
 
-      <form>
+      <form onSubmit={handleSubmit}>
         <h1>
           Cadastro do <br /> ponto de coleta
         </h1>
