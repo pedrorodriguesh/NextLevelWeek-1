@@ -82,6 +82,7 @@ const CreatePoint = () => {
       <Marker position={[51.505, -0.09]}>
         <Popup>Você está aqui!</Popup>
       </Marker>
+      
     );
   }
   
