@@ -192,7 +192,7 @@ const CreatePoint = () => {
           </legend>
 
           <MapContainer
-            center={initialPosition}
+            center={[-22.222541067339215, -49.940111339092255]}
             zoom={15}
             scrollWheelZoom={true}
           >
