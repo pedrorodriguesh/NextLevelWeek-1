@@ -139,9 +139,10 @@ const CreatePoint = () => {
       items
     }
 
-    api.post('points', data)
+    await api.post('points', data)
 
-    alert('Ponto criado com sucesso!')
+    alert('Ponto cadastrado com sucesso!')
+
   }
 
 
