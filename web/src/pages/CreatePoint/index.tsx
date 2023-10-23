@@ -124,7 +124,7 @@ const CreatePoint = () => {
     const whatsapp = entityWpp
     const uf = selectedUf
     const city = selectedCity
-    const latitude = -22.222541067339215
+    const lat = -22.222541067339215
     const longitude = -49.940111339092255
     const items = selectedItems
 
@@ -132,17 +132,14 @@ const CreatePoint = () => {
       name,
       email,
       whatsapp,
-      latitude,
+      latitude: lat,
       longitude,
       city,
       uf,
       items
     }
 
-    await api.post('points', data)
-
-    alert('Ponto cadastrado com sucesso!')
-
+   await api.post('points', data)
   }
 
 

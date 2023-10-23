@@ -7,7 +7,7 @@ export async function up(knex: Knex): Promise<any> { // ### Criar a tabela.
         table.string('name').notNullable()
         table.string('email').notNullable()
         table.string('whatsapp').notNullable()
-        table.decimal('latitute').notNullable()
+        table.decimal('latitude').notNullable()
         table.decimal('longitude').notNullable()
         table.string('city').notNullable()
         table.string('uf', 2).notNullable()
