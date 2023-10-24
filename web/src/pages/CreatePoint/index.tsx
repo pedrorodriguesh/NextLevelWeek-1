@@ -1,6 +1,9 @@
-import React, { useEffect, useState, FormEvent } from "react";
+import React, { useEffect, useState, FormEvent } from "react"; // hooks
+
 import { Link } from "react-router-dom";
-import { FiArrowLeft } from "react-icons/fi";
+import { FiArrowLeft } from "react-icons/fi"; // icon import
+
+// ### Leaflet => Map API.
 import {
   MapContainer,
   TileLayer,
@@ -8,8 +11,9 @@ import {
   Marker,
   Popup,
 } from "react-leaflet";
-import api from "../../services/api";
+
 import axios from "axios";
+import api from "../../services/api";
 
 import "./styles.css";
 import logo from "../../assets/logo.svg";
@@ -103,6 +107,7 @@ const CreatePoint = () => {
     );
   }
 
+  // função dos itens selecionados.
  function handleSelectItem(id: number) {
     const alreadySelected = selectedItems.findIndex(item => item === id)
 
@@ -113,9 +118,9 @@ const CreatePoint = () => {
     } else {
       setSelectedItems([ ...selectedItems, id ])
     }
-
   }
 
+  // submit do formulário, criar registro no banco de dados.
   async function handleSubmit(event: FormEvent) {
     event.preventDefault()
 
@@ -124,15 +129,14 @@ const CreatePoint = () => {
     const whatsapp = entityWpp
     const uf = selectedUf
     const city = selectedCity
-    const lat = -22.222541067339215
-    const longitude = -49.940111339092255
+    const [latitude, longitude] = userPosition
     const items = selectedItems
 
     const data = {
       name,
       email,
       whatsapp,
-      latitude: lat,
+      latitude,
       longitude,
       city,
       uf,
@@ -140,6 +144,8 @@ const CreatePoint = () => {
     }
 
    await api.post('points', data)
+
+   alert('Ponto cadastrado com sucesso!')
   }
 
 
