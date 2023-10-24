@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -16,12 +16,16 @@ import { SvgUri } from "react-native-svg";
 const Points = () => {
   const navigation = useNavigation();
 
+  useEffect(() => {
+    
+  }, [])
+
   function handleNavigateBack() {
     navigation.goBack();
   }
 
   function handleNavigateToDetail() {
-    navigation.navigate('Detail')
+    navigation.navigate("Detail");
   }
 
   return (
@@ -62,7 +66,7 @@ const Points = () => {
                     uri: "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=2574&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                   }}
                 />
-                  <Text style={styles.mapMarkerTitle}>Mercado</Text>
+                <Text style={styles.mapMarkerTitle}>Mercado</Text>
               </View>
             </Marker>
           </MapView>
