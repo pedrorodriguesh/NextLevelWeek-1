@@ -1,5 +1,5 @@
-import React from "react";
-import { View, ImageBackground, Text, Image, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, ImageBackground, Text, Image, StyleSheet, TextInput, KeyboardAvoidingView, Platform } from "react-native";
 import { RectButton, GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { useNavigation } from "@react-navigation/native";
@@ -7,19 +7,26 @@ import { useNavigation } from "@react-navigation/native";
 import { Feather as Icon } from '@expo/vector-icons'
 
 const Home = () => {
+    const [uf, setUf] = useState('')
+    const [city, setCity] = useState('')
 
     const navigation = useNavigation()
 
     function handleNavigateToPoints() {
-        navigation.navigate('Points')
+        navigation.navigate('Points', {
+          uf,
+          city
+        })
     }
 
   return (
+    <KeyboardAvoidingView style={{ flex: 1}} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+
     <ImageBackground
       source={require("../../assets/home-background.png")}
       style={styles.container}
       imageStyle={{ width: 274, height: 368 }}
-    >
+      >
       <View style={styles.main}>
         <Image source={require("../../assets/logo.png")} />
         <Text style={styles.title}>Seu marketplace de coleta de resíduos</Text>
@@ -29,6 +36,9 @@ const Home = () => {
       </View>
 
       <View style={styles.footer}>
+        <TextInput style={styles.input} placeholder="Digite a UF" value={uf} onChangeText={setUf} maxLength={2} autoCapitalize="characters" autoCorrect={false}/>
+        <TextInput style={styles.input} placeholder="Digite a cidade" value={city} onChangeText={setCity} autoCorrect={false}/>
+
         <GestureHandlerRootView>
             <RectButton style={styles.button} onPress={handleNavigateToPoints}>
                 <View style={styles.buttonIcon}>
@@ -43,6 +53,7 @@ const Home = () => {
         </GestureHandlerRootView>
       </View>
     </ImageBackground>
+</KeyboardAvoidingView>
   );
 };
 
@@ -51,12 +62,12 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 32,
   },
-
+  
   main: {
     flex: 1,
     justifyContent: "center",
   },
-
+  
   title: {
     color: "#322153",
     fontSize: 32,
@@ -64,7 +75,7 @@ const styles = StyleSheet.create({
     maxWidth: 260,
     marginTop: 64,
   },
-
+  
   description: {
     color: "#6C6C80",
     fontSize: 16,
@@ -73,7 +84,7 @@ const styles = StyleSheet.create({
     maxWidth: 260,
     lineHeight: 24,
   },
-
+  
   footer: {},
 
   select: {},

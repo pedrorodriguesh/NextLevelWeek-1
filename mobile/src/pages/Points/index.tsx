@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import Constants from "expo-constants";
 import { Feather as Icon } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import MapView, { Marker } from "react-native-maps";
 import { SvgUri } from "react-native-svg";
 import * as Location from "expo-location";
@@ -31,8 +31,16 @@ interface Point {
   longitude: number,
 }
 
+interface Params {
+  city: string
+  uf: string,
+}
+
 const Points = () => {
   const navigation = useNavigation();
+
+  const route = useRoute()
+  const routeParams = route.params as Params
 
   const [items, setItems] = useState<Item[]>([]);
   const [points, setPoints] = useState<Point[]>([]);
@@ -69,24 +77,25 @@ const Points = () => {
     });
   }, []);
 
+  // TO DO => CHECK routeParams.city and routeParams.uf
   useEffect(() => {
     api.get('points', {
       params: {
-        city: 'Garça',
-        uf: 'SP',
-        items: [3]
+        city: routeParams.city,
+        uf: routeParams.uf,
+        items: selectedItems
       }
     }).then(response => {
       setPoints(response.data)
     })
-  }, [])
+  }, [selectedItems])
 
   function handleNavigateBack() {
     navigation.goBack();
   }
 
-  function handleNavigateToDetail() {
-    navigation.navigate("Detail");
+  function handleNavigateToDetail(id: number) {
+    navigation.navigate("Detail", { point_id: id});
   }
 
   function handleSelectItem(id: number) {
@@ -101,7 +110,7 @@ const Points = () => {
     }
   }
 
-  console.log(points)
+  console.log(routeParams.city, routeParams.uf, selectedItems)
 
   return (
     <>
@@ -131,7 +140,7 @@ const Points = () => {
                 <Marker
                 key={String(point.id)}
                 style={styles.mapMarker}
-                onPress={handleNavigateToDetail}
+                onPress={() => handleNavigateToDetail(point.id)}
                 coordinate={{
                   latitude: point.latitude,
                   longitude: point.longitude,
