@@ -28,7 +28,7 @@ const Home = () => {
                     </Text>
                 </View>
                 <Text style={styles.buttonText}>
-                    Entrar
+                    Pesquisar
                 </Text>
             </RectButton>
         </GestureHandlerRootView>
