@@ -1,3 +1,5 @@
+// conexão com o back-end =>  Axios. 
+
 import axios from "axios";
 
 const api = axios.create({
