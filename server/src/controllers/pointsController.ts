@@ -17,7 +17,14 @@ class PointsController {
       .distinct()
       .select("points.*");
 
-    return response.json(points);
+      const serializedPoints = points.map(point => {
+        return {
+          ...point,
+          image_url: `http://192.168.15.37:3333/uploads/${point.image}`,
+        };
+      });
+
+    return response.json(serializedPoints);
   }
 
   async show(request: Request, response: Response) {
@@ -34,7 +41,12 @@ class PointsController {
       .where("point_items.point_id", id)
       .select("items.title");
 
-    return response.json({ point, items });
+      const serializedPoint = {
+          ...point,
+          image_url: `http://192.168.15.37:3333/uploads/${point.image}`,
+        };
+
+    return response.json({ point: serializedPoint, items });
   }
 
   async create(request: Request, response: Response) {
@@ -45,7 +57,7 @@ class PointsController {
 
     // ### constante para deixar o código mais organizado, alocando todos os dados recebidos do request.
     const point = {
-      image: "https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&w=400",
+      image: request.file?.filename,
       name,
       email,
       whatsapp,
@@ -55,11 +67,15 @@ class PointsController {
       uf,
     };
 
+
     const insertedIds = await trx("points").insert(point); // criando registro na tabela points.
 
     const point_id = insertedIds[0];
 
-    const pointItems = items.map((item_id: number) => {
+    const pointItems = items
+    .split(',')
+    .map((item: string) => Number(item.trim()))
+    .map((item_id: number) => {
       return {
         item_id,
         point_id,
