@@ -82,8 +82,8 @@ const Points = () => {
   useEffect(() => {
     api.get('points', {
       params: {
-        city: 'Garça',
-        uf: 'SP',
+        city: routeParams.city,
+        uf: routeParams.uf,
         items: selectedItems
       }
     }).then(response => {
