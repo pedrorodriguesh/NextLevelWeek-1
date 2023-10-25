@@ -3,6 +3,8 @@ import React, { useEffect, useState, FormEvent } from "react"; // hooks
 import { Link } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi"; // icon import
 
+import Dropzone from "../../components/Dropzone";
+
 // ### Leaflet => Map API.
 import {
   MapContainer,
@@ -43,10 +45,10 @@ const CreatePoint = () => {
   // Estados para cadastro na API =>
   const [selectedUf, setSelectedUf] = useState("");
   const [selectedCity, setSelectedCity] = useState("");
-  const [entityName, setEntityName] = useState("")
-  const [entityEmail, setEntityEmail] = useState("")
-  const [entityWpp, setEntityWpp] = useState("")
-  const [selectedItems, setSelectedItems] = useState<number[]>([])
+  const [entityName, setEntityName] = useState("");
+  const [entityEmail, setEntityEmail] = useState("");
+  const [entityWpp, setEntityWpp] = useState("");
+  const [selectedItems, setSelectedItems] = useState<number[]>([]);
 
   const [userPosition, setUserPosition] = useState<[number, number]>([0, 0]);
   const [initialPosition, setInitialPosition] = useState<[number, number]>([
@@ -108,29 +110,29 @@ const CreatePoint = () => {
   }
 
   // função dos itens selecionados.
- function handleSelectItem(id: number) {
-    const alreadySelected = selectedItems.findIndex(item => item === id)
+  function handleSelectItem(id: number) {
+    const alreadySelected = selectedItems.findIndex((item) => item === id);
 
-    if(alreadySelected >= 0){
-      const filteredItems = selectedItems.filter(item => item !== id)
+    if (alreadySelected >= 0) {
+      const filteredItems = selectedItems.filter((item) => item !== id);
 
-      setSelectedItems(filteredItems)
+      setSelectedItems(filteredItems);
     } else {
-      setSelectedItems([ ...selectedItems, id ])
+      setSelectedItems([...selectedItems, id]);
     }
   }
 
   // submit do formulário, criar registro no banco de dados.
   async function handleSubmit(event: FormEvent) {
-    event.preventDefault()
+    event.preventDefault();
 
-    const name = entityName
-    const email = entityEmail
-    const whatsapp = entityWpp
-    const uf = selectedUf
-    const city = selectedCity
-    const [latitude, longitude] = userPosition
-    const items = selectedItems
+    const name = entityName;
+    const email = entityEmail;
+    const whatsapp = entityWpp;
+    const uf = selectedUf;
+    const city = selectedCity;
+    const [latitude, longitude] = userPosition;
+    const items = selectedItems;
 
     const data = {
       name,
@@ -140,14 +142,13 @@ const CreatePoint = () => {
       longitude,
       city,
       uf,
-      items
-    }
+      items,
+    };
 
-   await api.post('points', data)
+    await api.post("points", data);
 
-   alert('Ponto cadastrado com sucesso!')
+    alert("Ponto cadastrado com sucesso!");
   }
-
 
   return (
     <div id="page-create-point">
@@ -165,6 +166,8 @@ const CreatePoint = () => {
           Cadastro do <br /> ponto de coleta
         </h1>
 
+        <Dropzone />
+
         <fieldset>
           <legend>
             <h2>Dados</h2>
@@ -172,18 +175,33 @@ const CreatePoint = () => {
 
           <div className="field">
             <label htmlFor="name">Nome da entidade</label>
-            <input type="text" name="name" id="name" onChange={(e) => setEntityName(e.target.value)} />
+            <input
+              type="text"
+              name="name"
+              id="name"
+              onChange={(e) => setEntityName(e.target.value)}
+            />
           </div>
 
           <div className="field-group">
             <div className="field">
               <label htmlFor="email">E-mail</label>
-              <input type="email" name="email" id="email" onChange={(e) => setEntityEmail(e.target.value)} />
+              <input
+                type="email"
+                name="email"
+                id="email"
+                onChange={(e) => setEntityEmail(e.target.value)}
+              />
             </div>
 
             <div className="field">
               <label htmlFor="whataspp">Whatsapp</label>
-              <input type="text" name="whatsapp" id="whatsapp" onChange={(e) => setEntityWpp(e.target.value)}/>
+              <input
+                type="text"
+                name="whatsapp"
+                id="whatsapp"
+                onChange={(e) => setEntityWpp(e.target.value)}
+              />
             </div>
           </div>
         </fieldset>
@@ -249,11 +267,10 @@ const CreatePoint = () => {
 
           <ul className="items-grid">
             {items.map((item) => (
-              <li 
-              key={item.id} 
-              onClick={() => handleSelectItem(item.id)} 
-              className={selectedItems.includes(item.id) ? "selected" : ""}
-              
+              <li
+                key={item.id}
+                onClick={() => handleSelectItem(item.id)}
+                className={selectedItems.includes(item.id) ? "selected" : ""}
               >
                 <img src={item.image_url} alt={item.title} />
                 <span>{item.title}</span>
