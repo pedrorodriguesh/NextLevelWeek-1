@@ -55,6 +55,8 @@ const CreatePoint = () => {
     0, 0,
   ]);
 
+  const [selectedFile, setSelectedFile] = useState<File>()
+
   // pegando os items da api
   useEffect(() => {
     api.get("items").then((response) => {
@@ -166,7 +168,7 @@ const CreatePoint = () => {
           Cadastro do <br /> ponto de coleta
         </h1>
 
-        <Dropzone />
+        <Dropzone onFileUploaded={setSelectedFile}/>
 
         <fieldset>
           <legend>
