@@ -1,7 +1,6 @@
+// ### Configurações knex, setando o banco de dados, onde vai ficar, diretório de migrations e seeds.
 import type { Knex } from "knex";
 import path from 'path'
-
-// Update with your config settings.
 
 const config: { [key: string]: Knex.Config } = {
   development: {
