@@ -1,6 +1,7 @@
+// ### Configurações multer => upload de arquivos.
+import crypto from "crypto";
 import multer from "multer";
 import path from "path";
-import crypto from "crypto";
 
 export default {
   storage: multer.diskStorage({
