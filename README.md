@@ -14,3 +14,7 @@ Esse projeto foi desenvolvido com **TypeScript** usando as seguintes tecnologias
 - **React Native**
 - **NodeJS**
 - **Expo**
+
+## Licença
+
+O projeto está sob a licença **[MIT](https://choosealicense.com/licenses/mit/)**
