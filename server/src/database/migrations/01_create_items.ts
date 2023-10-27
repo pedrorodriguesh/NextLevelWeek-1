@@ -1,4 +1,5 @@
 import { Knex } from 'knex'
+// migrations para criação das tabelas.
 
 export async function up(knex: Knex): Promise<any> { // ### Criar a tabela.
    return knex.schema.createTable('items', table => {
