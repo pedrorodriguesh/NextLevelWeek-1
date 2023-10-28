@@ -1,5 +1,4 @@
 // ### Controlador que cuida da tabela de itens e suas funções.
-
 import knex from "../database/connection";
 import { Request, Response } from "express";
 

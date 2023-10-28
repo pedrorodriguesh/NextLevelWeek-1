@@ -1,7 +1,10 @@
+// Controlador para as funcionalidades da tabela Points.
+
 import knex from "../database/connection";
 import { Request, Response } from "express";
 
 class PointsController {
+  // 1. => Listar todos os pontos cadastrados.
   async index(request: Request, response: Response) {
     const { city, uf, items } = request.query;
 
@@ -27,6 +30,7 @@ class PointsController {
     return response.json(serializedPoints);
   }
 
+  // 2. => Listar UM ponto específico.
   async show(request: Request, response: Response) {
     const { id } = request.params;
 
@@ -49,9 +53,10 @@ class PointsController {
     return response.json({ point: serializedPoint, items });
   }
 
+  // 3. => Criar ponto de coleta.
   async create(request: Request, response: Response) {
     const { name, email, whatsapp, latitude, longitude, city, uf, items } =
-      request.body;
+      request.body; // dados que vêm do body. 
 
     const trx = await knex.transaction()
 
@@ -66,7 +71,6 @@ class PointsController {
       city,
       uf,
     };
-
 
     const insertedIds = await trx("points").insert(point); // criando registro na tabela points.
 
