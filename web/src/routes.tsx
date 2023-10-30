@@ -1,4 +1,4 @@
-// Rotas da aplicação => 
+// Rotas da aplicação =>
 
 import { Route, BrowserRouter, Routes } from "react-router-dom";
 import React from "react";

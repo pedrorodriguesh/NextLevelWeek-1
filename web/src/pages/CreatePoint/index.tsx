@@ -1,24 +1,24 @@
-import React, { useEffect, useState, FormEvent } from "react"; // hooks
+import { FormEvent, useEffect, useState } from "react"; // hooks
 
-import { Link } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi"; // icon import
+import { Link } from "react-router-dom";
 
 import Dropzone from "../../components/Dropzone";
 
 // ### Leaflet => Map API.
 import {
   MapContainer,
-  TileLayer,
-  useMapEvents,
   Marker,
   Popup,
+  TileLayer,
+  useMapEvents,
 } from "react-leaflet";
 
 import axios from "axios";
 import api from "../../services/api";
 
-import "./styles.css";
 import logo from "../../assets/logo.svg";
+import "./styles.css";
 
 interface Item {
   id: number;
@@ -55,13 +55,13 @@ const CreatePoint = () => {
     0, 0,
   ]);
 
-  const [selectedFile, setSelectedFile] = useState<File>()
+  const [selectedFile, setSelectedFile] = useState<File>();
 
   // pegando os items da api
   useEffect(() => {
     api.get("items").then((response) => {
       setItems(response.data);
-      console.log(items)
+      console.log(items);
     });
   }, []);
 
@@ -137,19 +137,19 @@ const CreatePoint = () => {
     const [latitude, longitude] = userPosition;
     const items = selectedItems;
 
-    const data = new FormData()
+    const data = new FormData();
 
-    data.append('name', name);
-    data.append('email', email);
-    data.append('whatsapp', whatsapp);
-    data.append('latitude', String(latitude));
-    data.append('longitude', String(longitude));
-    data.append('city', city);
-    data.append('uf', uf);
-    data.append('items', items.join(','));
-    
-    if(selectedFile) {
-      data.append('image', selectedFile)
+    data.append("name", name);
+    data.append("email", email);
+    data.append("whatsapp", whatsapp);
+    data.append("latitude", String(latitude));
+    data.append("longitude", String(longitude));
+    data.append("city", city);
+    data.append("uf", uf);
+    data.append("items", items.join(","));
+
+    if (selectedFile) {
+      data.append("image", selectedFile);
     }
 
     await api.post("points", data);
@@ -173,7 +173,7 @@ const CreatePoint = () => {
           Cadastro do <br /> ponto de coleta
         </h1>
 
-        <Dropzone onFileUploaded={setSelectedFile}/>
+        <Dropzone onFileUploaded={setSelectedFile} />
 
         <fieldset>
           <legend>
